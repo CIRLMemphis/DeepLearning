@@ -14,7 +14,7 @@ from torch.utils.data import  DataLoader
 from skimage import io, transform
 
 import sys
-path = '/home/star/0_code_lhj/DL-SIM-github/Training_codes/UNet/'
+path = '/home/cvan/projects/DeepLearning/Training_codes/UNet'
 sys.path.append(path)
 
 from unet_model import UNet
@@ -119,15 +119,15 @@ if __name__ == "__main__":
     # weight_decay = 0.0001
     batch_size = 1
     
-    SRRFDATASET = ReconsDataset(train_in_path="/media/star/LuhongJin/UNC_data/SIM/ALL_data/microtubule/Training_Testing/HE_X2/",
-                                train_gt_path="/media/star/LuhongJin/UNC_data/SIM/ALL_data/microtubule/Training_Testing/HER/",
+    SRRFDATASET = ReconsDataset(train_in_path="/home/cvan/cirlData/DL_SIM_Paper/microtubule/Training_Testing_microtubules/HE_X2/",
+                                train_gt_path="/home/cvan/cirlData/DL_SIM_Paper/microtubule/Training_Testing_microtubules/HER/",
                                 transform = ToTensor(),
                                 img_type = 'tif',
                                 in_size = 256)
     train_dataloader = torch.utils.data.DataLoader(SRRFDATASET, batch_size=batch_size, shuffle=True, pin_memory=True) # better than for loop
     
-    SRRFDATASET2 = ReconsDataset(train_in_path="/media/star/LuhongJin/UNC_data/SIM/ALL_data/microtubule/Training_Testing/testing_HE_X2/",
-                                train_gt_path ="/media/star/LuhongJin/UNC_data/SIM/ALL_data/microtubule/Training_Testing/testing_HER/",
+    SRRFDATASET2 = ReconsDataset(train_in_path="/home/cvan/cirlData/DL_SIM_Paper/microtubule/Training_Testing_microtubules/testing_HE_X2/",
+                                train_gt_path ="/home/cvan/cirlData/DL_SIM_Paper/microtubule/Training_Testing_microtubules/testing_HER/",
                                 transform = ToTensor(),
                                 img_type = 'tif',
                                 in_size = 256)
@@ -142,19 +142,19 @@ if __name__ == "__main__":
     loss_all = np.zeros((2000, 4))
     for epoch in range(2000):
         
-        mae_m, mae_s = val_during_training(train_dataloader)
-        loss_all[epoch,0] = mae_m
-        loss_all[epoch,1] = mae_s
-        mae_m, mae_s = val_during_training(validation_dataloader) 
-        loss_all[epoch,2] = mae_m
-        loss_all[epoch,3] = mae_s
-        
-        file = Workbook(encoding = 'utf-8')
-        table = file.add_sheet('loss_all')
-        for i,p in enumerate(loss_all):
-            for j,q in enumerate(p):
-                table.write(i,j,q)
-        file.save('/home/star/0_code_lhj/DL-SIM-github/Training_codes/UNet/loss_UNet_SIM3_microtubule.xls')
+        # mae_m, mae_s = val_during_training(train_dataloader)
+        # loss_all[epoch,0] = mae_m
+        # loss_all[epoch,1] = mae_s
+        # mae_m, mae_s = val_during_training(validation_dataloader)
+        # loss_all[epoch,2] = mae_m
+        # loss_all[epoch,3] = mae_s
+        #
+        # file = Workbook(encoding = 'utf-8')
+        # table = file.add_sheet('loss_all')
+        # for i,p in enumerate(loss_all):
+        #     for j,q in enumerate(p):
+        #         table.write(i,j,q)
+        # file.save('/home/star/0_code_lhj/DL-SIM-github/Training_codes/UNet/loss_UNet_SIM3_microtubule.xls')
 
         lr = get_learning_rate(epoch)
         for p in optimizer.param_groups:
@@ -186,4 +186,5 @@ if __name__ == "__main__":
             optimizer.step()
 
             print ("[Epoch %d] [Batch %d/%d] [loss: %f]" % (epoch, batch_idx, len(train_dataloader), loss.item()))
-        torch.save(model.state_dict(), "/home/star/0_code_lhj/DL-SIM-github/Training_codes/UNet/UNet_SIM3_microtubule.pkl")
+        if epoch % 50 == 0:
+            torch.save(model.state_dict(), "/home/cvan/projects/DeepLearning/Training_codes/UNet/UNet_SIM15_microtubule.pkl")
