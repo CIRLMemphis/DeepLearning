@@ -50,12 +50,12 @@ def nrmse(img_gt, img2, type="sd"):
 #    return score
 
 if __name__ == "__main__":
-    train_in_path="/.../microtubule/prediction/"
-    train_gt_path="/.../microtubule/HER/"
-    data_save = "/.../"
+    train_in_path="D:/data/LuhongJin_SIM_2020/microtubule/prediction/"
+    train_gt_path="D:/data/LuhongJin_SIM_2020/microtubule/Training_Testing_microtubules/testing_HER/"
+    data_save = "D:/data/LuhongJin_SIM_2020/microtubule/prediction/"
     dirs = os.listdir(train_gt_path) 
-    for i in range(len(train_in_path_all)):
-        train_in_path = train_in_path_all[i]
+    for i in range(1):
+        #train_in_path = train_in_path_all[i]
         p_value = np.zeros((len(dirs), 2))
         for idx in range(len(dirs)):
             image_name = os.path.join(train_gt_path, dirs[idx])
@@ -64,8 +64,9 @@ if __name__ == "__main__":
                 image_name = os.path.join(train_in_path, dirs[idx][:-4]+'_pred.tif')
             else:
                 image_name = os.path.join(train_in_path, dirs[idx][:-4]+'_pred_pred.tif')
-            data_in = Image.open(image_name)
-            data_in = np.array(data_in)
+            #data_in = Image.open(image_name)
+            #data_in = np.array(data_in)
+            data_in = io.imread(image_name)
             
             
             min_v = np.quantile(data_gt, 0.01)
