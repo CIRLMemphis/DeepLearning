@@ -1,3 +1,20 @@
+# Replicating the results from the paper "Deep learning enables structured illumination microscopy with low light levels and enhanced speed"
+Here are the steps to replicate the supplementary table 2 at
+https://static-content.springer.com/esm/art%3A10.1038%2Fs41467-020-15784-x/MediaObjects/41467_2020_15784_MOESM1_ESM.pdf
+1. Clone the original repo: https://github.com/drbeiliu/DeepLearning
+2. Get the data from the authors
+3. Get the pre-trained model from the authors or download from here: https://github.com/bereketeshete/DeepLearning
+4. Change the 'testing' path on line 17 of the file "DeepLearning\Testing_codes\UNet\testing_UNet_SIM3_microtubule.py"
+5. Change the 'test_in_path' on line 82 of the file "DeepLearning\Testing_codes\UNet\testing_UNet_SIM3_microtubule.py"
+6. Change the pre-trained model path on line 92 of the file "DeepLearning\Testing_codes\UNet\testing_UNet_SIM3_microtubule.py"
+7. Change the path on line 113 and the part of the codes 'pred.detach().cpu().numpy().astype(np.uint32)' into 'pred.detach().cpu().numpy().astype(np.float)', of the file "DeepLearning\Testing_codes\UNet\testing_UNet_SIM3_microtubule.py"
+8. Run "DeepLearning\Testing_codes\UNet\testing_UNet_SIM3_microtubule.py" to get the prediction
+9. Change the paths on line 53, 54, 55 of the file "DeepLearning\Data_preprocessing\performance.py"
+10. Change line 57 to 'for i in range(1):' of the file "DeepLearning\Data_preprocessing\performance.py"
+11. Comment line 58 of the file "DeepLearning\Data_preprocessing\performance.py"
+12. Replace line 67, 68 with "data_in = io.imread(image_name)", of the file "DeepLearning\Data_preprocessing\performance.py"
+13. Run the file "DeepLearning\Data_preprocessing\performance.py" to get an Excel file in the prediction folder
+14. Average the columns to get metrics in the supplementary table 2. I got "34.83110464,  0.211399846" for the PSNR and NRMSE, which looks good with supplementary table 2, column 4.
 
 # Deep learning enables structured illumination microscopy with low light levels and enhanced speed
 Structured illumination microscopy (SIM) [[1](https://onlinelibrary.wiley.com/doi/full/10.1046/j.1365-2818.2000.00710.x), [2](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2397368/)]  is one of most popular superresolution techniques in biological microscopy. Typically, it requires nine 2D or fifteen 3D images to compute a high resolution image. The microscope has to be well charactorized and the parameters for reconstrution need to be fine tuned to avoid artifacts during reconstrution [[3](https://www.sciencedirect.com/science/article/pii/S003040181831054X?via%3Dihub)]. Very few open-source packages are avaliable to handle SIM data [[4](https://academic.oup.com/bioinformatics/article/32/2/318/1744618), [5](https://ieeexplore.ieee.org/document/7400963), [6](https://www.nature.com/articles/ncomms10980)]. 
