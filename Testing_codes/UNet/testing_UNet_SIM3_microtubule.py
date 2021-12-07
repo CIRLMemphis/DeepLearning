@@ -14,7 +14,7 @@ from skimage import io, transform
 import numpy as np
 
 import sys
-path = '/home/star/0_code_lhj/DL-SIM-github/Testing_codes/UNet/'
+path = 'D:/projects/DeepLearning/Testing_codes/UNet/'
 sys.path.append(path)
 
 from unet_model import UNet
@@ -79,7 +79,7 @@ if __name__ == "__main__":
     # weight_decay = 0.0001
     batch_size = 1
     
-    SRRFDATASET = ReconsDataset(test_in_path="/home/star/0_code_lhj/DL-SIM-github/TESTING_DATA/microtuble/HE_X2/",
+    SRRFDATASET = ReconsDataset(test_in_path="D:/data/LuhongJin_SIM_2020/microtubule/Training_Testing_microtubules/testing_HE_X2/",
                                 transform = ToTensor(),
                                 img_type = 'tif',
                                 in_size = 256)
@@ -89,7 +89,7 @@ if __name__ == "__main__":
     
     print("{} paramerters in total".format(sum(x.numel() for x in model.parameters())))
     model.cuda(cuda)
-    model.load_state_dict(torch.load("/home/star/0_code_lhj/DL-SIM-github/MODELS/UNet_SIM3_microtubule.pkl"))
+    model.load_state_dict(torch.load("D:/data/LuhongJin_SIM_2020/models/UNet_SIM3_microtubule.pkl"))
     model.eval()
     
     for batch_idx, items in enumerate(test_dataloader):
@@ -110,4 +110,4 @@ if __name__ == "__main__":
 #        mv = pred.flatten().min()
 #        if mv < 0:
 #            pred = pred + abs(mv)
-        io.imsave('/home/star/0_code_lhj/DL-SIM-github/Testing_codes/UNet/prediction/' +image_name[0] + '_pred.tif', pred.detach().cpu().numpy().astype(np.uint32))
+        io.imsave('D:/data/LuhongJin_SIM_2020/microtubule/prediction/' +image_name[0] + '_pred.tif', pred.detach().cpu().numpy().astype(np.float))
